@@ -1,0 +1,34 @@
+module: github.com/crewjam/saml
+additional_packages:
+  - module: github.com/crewjam/saml
+    package: github.com/crewjam/saml/samlidp
+    versions:
+      - fixed: v0.4.3
+  - module: github.com/crewjam/saml
+    package: github.com/crewjam/saml/samlsp
+    versions:
+      - fixed: v0.4.3
+versions:
+  - fixed: v0.4.3
+description: |
+    Due to the behavior of encoding/xml, a crafted XML document may cause
+    XML Digital Signature validation to be entirely bypassed, causing an
+    unsigned document to appear signed.
+published: 2021-04-14T20:04:52Z
+cves:
+  - CVE-2020-27846
+ghsas:
+  - GHSA-4hq8-gmxx-h6w9
+symbols:
+  - IdpAuthnRequest.Validate
+  - ServiceProvider.ParseXMLResponse
+  - ServiceProvider.ValidateLogoutResponseForm
+  - ServiceProvider.ValidateLogoutResponseRedirect
+derived_symbols:
+  - IdentityProvider.ServeSSO
+  - ServiceProvider.ParseResponse
+  - ServiceProvider.ValidateLogoutResponseRequest
+links:
+    commit: https://github.com/crewjam/saml/commit/da4f1a0612c0a8dd0452cf8b3c7a6518f6b4d053
+    context:
+      - https://github.com/crewjam/saml/security/advisories/GHSA-4hq8-gmxx-h6w9

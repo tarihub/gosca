@@ -1,0 +1,46 @@
+module: github.com/unknwon/cae
+package: github.com/unknwon/cae/tz
+additional_packages:
+  - module: github.com/unknwon/cae
+    package: github.com/unknwon/cae/zip
+    symbols:
+      - ZipArchive.Open
+      - ZipArchive.ExtractToFunc
+    derived_symbols:
+      - Create
+      - ExtractTo
+      - ExtractToFunc
+      - Open
+      - OpenFile
+      - ZipArchive.Close
+      - ZipArchive.ExtractTo
+      - ZipArchive.Flush
+    versions:
+      - fixed: v1.0.1
+versions:
+  - fixed: v1.0.1
+description: |
+    Due to improper path santization, archives containing relative file
+    paths can cause files to be written (or overwritten) outside of the
+    target directory.
+published: 2021-04-14T20:04:52Z
+cves:
+  - CVE-2020-7668
+ghsas:
+  - GHSA-88jf-7rch-32qc
+symbols:
+  - TzArchive.syncFiles
+  - TzArchive.ExtractToFunc
+derived_symbols:
+  - Create
+  - ExtractTo
+  - Open
+  - OpenFile
+  - TzArchive.Close
+  - TzArchive.ExtractTo
+  - TzArchive.Flush
+  - TzArchive.Open
+links:
+    commit: https://github.com/unknwon/cae/commit/07971c00a1bfd9dc171c3ad0bfab5b67c2287e11
+    context:
+      - https://snyk.io/research/zip-slip-vulnerability
