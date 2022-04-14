@@ -5,4 +5,4 @@ type VulnDbIdx struct {
 	Versions []map[string]string
 }
 
-type VulDbIdxMap map[string]VulnDbIdx
+type VulDbIdxMap map[string][]VulnDbIdx

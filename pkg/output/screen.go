@@ -9,7 +9,8 @@ import (
 func PrintVuln(vulIdList []string, vulnDbMap map[string]config.VulnDb) {
 	for _, vulId := range vulIdList {
 		if _, ok := vulnDbMap[vulId]; ok {
-			fmt.Printf("\t%s\n", vulId)
+			fmt.Println("\t" + strings.Repeat("=", 80))
+			fmt.Printf("\t%s", vulId)
 			var vul = []config.VulnDb{vulnDbMap[vulId]}
 			printAddition(vul, "\t", 80)
 		}
@@ -29,7 +30,7 @@ func printAddition(additionalPacks []config.VulnDb, tab string, splitDashNum int
 		}
 
 		if len(vul.AdditionalPackages) > 0 {
-			fmt.Printf("%s[AdditionalPackages] \n", tab)
+			fmt.Printf("%s[Additional Packages] \n", tab)
 			printAddition(vul.AdditionalPackages, tab+"\t", 20)
 		}
 
@@ -68,7 +69,7 @@ func printAddition(additionalPacks []config.VulnDb, tab string, splitDashNum int
 
 		if len(vul.DerivedSymbols) > 0 {
 			derivedSymbols := strings.Join(vul.DerivedSymbols, "\n"+tab)
-			fmt.Printf("%s[DerivedSymbols] \n%s%s\n\n", tab, tab, derivedSymbols)
+			fmt.Printf("%s[Derived Symbols] \n%s%s\n\n", tab, tab, derivedSymbols)
 		}
 
 		var linksList []string

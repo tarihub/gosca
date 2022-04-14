@@ -57,7 +57,12 @@ func (vm VulnDbMap) ReadVulnDbYaml(yamlPaths []string) VulDbIdxMap {
 		}
 		id := strings.TrimRight(strings.TrimRight(filepath.Base(yamlPath), ".yaml"), ".yml")
 		vm[id] = vuln
-		vulDbIdxMap[vuln.Module] = VulnDbIdx{Id: id, Versions: vuln.Versions}
+
+		if _, ok := vulDbIdxMap[vuln.Module]; ok {
+			vulDbIdxMap[vuln.Module] = append(vulDbIdxMap[vuln.Module], VulnDbIdx{Id: id, Versions: vuln.Versions})
+		} else {
+			vulDbIdxMap[vuln.Module] = []VulnDbIdx{VulnDbIdx{Id: id, Versions: vuln.Versions}}
+		}
 	}
 
 	return vulDbIdxMap

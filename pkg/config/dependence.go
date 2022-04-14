@@ -7,31 +7,40 @@ type Dependence struct {
 	Versions []string
 }
 
-func (d Dependence) GetMatches(vulDbIdxMap VulDbIdxMap) (string, bool) {
-	if _, ok := vulDbIdxMap[d.Module]; !ok {
-		return "", false
-	}
+func (d Dependence) GetMatches(vulDbIdxMap VulDbIdxMap) ([]string, bool) {
+	var matches []string
+	var matchesMap = make(map[string]bool)
 
-VersionLoop:
-	for _, version := range vulDbIdxMap[d.Module].Versions {
-		if introVersion, ok := version["introduced"]; ok {
-			for _, depsVersion := range d.Versions {
-				if utils.CompareVersion(depsVersion, introVersion) < 0 {
-					continue VersionLoop
+	for _, vul := range vulDbIdxMap[d.Module] {
+	VersionLoop:
+		for _, version := range vul.Versions {
+			if introVersion, ok := version["introduced"]; ok {
+				for _, depsVersion := range d.Versions {
+					if utils.CompareVersion(depsVersion, introVersion) < 0 {
+						continue VersionLoop
+					}
 				}
 			}
-		}
 
-		if fixedVersion, ok := version["fixed"]; ok {
-			for _, depsVersion := range d.Versions {
-				if utils.CompareVersion(depsVersion, fixedVersion) > -1 {
-					continue VersionLoop
+			if fixedVersion, ok := version["fixed"]; ok {
+				for _, depsVersion := range d.Versions {
+					if utils.CompareVersion(depsVersion, fixedVersion) > -1 {
+						continue VersionLoop
+					}
 				}
 			}
-		}
 
-		// FIXME go 标准库漏洞只返回一个..
-		return vulDbIdxMap[d.Module].Id, true
+			if matchesMap[vul.Id] {
+				break
+			}
+			matchesMap[vul.Id] = true
+			matches = append(matches, vul.Id)
+		}
 	}
-	return "", false
+
+	if matches == nil {
+		return nil, false
+	}
+
+	return matches, true
 }

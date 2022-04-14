@@ -19,8 +19,8 @@ var (
 )
 
 func init() {
-	flag.StringVar(&workDir, "work_dir", "", "home directory which contains the go.mod(sum) file")
-	flag.StringVar(&vulnDbDir, "vulndb_dir", "vulndb", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
+	flag.StringVar(&workDir, "work-dir", "", "home directory which contains the go.mod(sum) file")
+	flag.StringVar(&vulnDbDir, "vulndb-dir", "vulndb", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
 	flag.BoolVar(&version, "v", false, "show gosca version")
 	flag.Parse()
 
@@ -63,7 +63,7 @@ func main() {
 	vulnDbMap := make(config.VulnDbMap)
 	vulDbIdxMap := vulnDbMap.ReadVulnDbYaml(yamlPaths)
 
-	// parse work_dir/go.mod and work_dir/sum.mod
+	// Parse work_dir/go.mod and work_dir/sum.mod
 	goDepsList := make([]config.Dependence, 0)
 
 	e1, e2 := error(nil), error(nil)
