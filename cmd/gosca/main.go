@@ -71,7 +71,7 @@ func main() {
 		os.Exit(1)
 	}
 	if len(yamlPaths) == 0 {
-		fmt.Fprintf(os.Stderr, "No vulnerability rule load from %q dir", vulnDbDir)
+		fmt.Fprintf(os.Stderr, "No vulnerability rule load from %q directory\n", vulnDbDir)
 		os.Exit(1)
 	}
 
