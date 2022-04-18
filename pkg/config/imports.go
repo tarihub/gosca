@@ -1,10 +1,9 @@
 package config
 
 import (
-	"fmt"
-	"github.com/TARI0510/gosca/pkg/util/file"
 	"golang.org/x/tools/go/packages"
 	"runtime"
+	"strings"
 	"sync"
 )
 
@@ -16,7 +15,6 @@ type Imports struct {
 }
 
 func (i Imports) GetImports() {
-
 	config := &packages.Config{
 		Mode: packages.NeedDeps | packages.NeedTypes | packages.NeedSyntax | packages.NeedImports,
 	}
@@ -38,6 +36,7 @@ func (i Imports) GetImports() {
 		for {
 			select {
 			case p := <-job:
+				// Can't use golang.org/x/tools/go/packages because it doesn't support non go modules
 				pkgs, err := packages.Load(config, p)
 				select {
 				case r <- result{p, pkgs, err}:
@@ -53,12 +52,7 @@ func (i Imports) GetImports() {
 	}
 
 	for _, pkgPath := range i.PackagePaths {
-		absPath, err := file.GetPkgAbsPath(pkgPath)
-		if err != nil {
-			fmt.Println("[skip] Path " + absPath + " doesn't exist.")
-			return
-		}
-		jobs <- absPath
+		jobs <- pkgPath
 	}
 
 	for i := 0; i < runtime.NumCPU(); i++ {
@@ -77,6 +71,7 @@ func (i Imports) GetImports() {
 		}
 		for _, pkg := range r.pkgs {
 			if pkg.Errors != nil {
+				//fmt.Fprintf(os.Stderr, "error: %v\n", pkg.Errors)
 				close(quit)
 				wg.Wait()
 			}
@@ -88,8 +83,9 @@ func (i Imports) GetImports() {
 					if _, ok := i.PackageLocationMap[imp.Path.Value]; !ok {
 						i.PackageLocationMap[imp.Path.Value] = []string{}
 					}
+					pkgName := strings.Replace(imp.Path.Value, "\"", "", -1)
 					// Package -> file location list
-					i.PackageLocationMap[imp.Path.Value] = append(i.PackageLocationMap[imp.Path.Value], pkg.Fset.File(syntax.Pos()).Name())
+					i.PackageLocationMap[pkgName] = append(i.PackageLocationMap[pkgName], pkg.Fset.File(syntax.Pos()).Name())
 				}
 			}
 		}

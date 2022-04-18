@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "archive/zip"
 	"flag"
 	"fmt"
 	"github.com/TARI0510/gosca/pkg/checker"
@@ -31,7 +32,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&workDir, "work-dir", "", "home directory which contains the go.mod(sum) file")
+	flag.StringVar(&workDir, "work-dir", ".", "home directory which contains the go.mod(sum) file")
 	flag.StringVar(&vulnDbDir, "vulndb-dir", "vulndb", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
 	// TODO Add include and exclude vulndb-dir flag
 	flag.BoolVar(&version, "v", false, "show gosca version")
@@ -102,10 +103,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	packagePaths, err := file.PackagePaths(workDir, file.ExcludedDirsRegExp(excludeDirs))
-	if err != nil {
-		return
-	}
-
-	checker.CheckGoModule(goDepsList, vulDbIdxMap, vulnDbMap, packagePaths)
+	checker.CheckGoModule(goDepsList, vulDbIdxMap, vulnDbMap, workDir, excludeDirs)
 }

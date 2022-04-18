@@ -1,3 +1,3 @@
 package config
 
-var Version = "GoSCA 0.2.1"
+var Version = "GoSCA 0.2.2"

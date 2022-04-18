@@ -28,6 +28,7 @@ func ListSuffixFiles(dirPath string, suffixes []string) ([]string, error) {
 func PackagePaths(root string, excludes []*regexp.Regexp) ([]string, error) {
 	paths := map[string]bool{}
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+		// FIXME cannot identify soft link
 		if filepath.Ext(path) == ".go" {
 			path = filepath.Dir(path)
 			if isExcluded(filepath.ToSlash(path), excludes) {
@@ -43,7 +44,12 @@ func PackagePaths(root string, excludes []*regexp.Regexp) ([]string, error) {
 
 	var result []string
 	for p := range paths {
-		result = append(result, p)
+		absPath, err := GetPkgAbsPath(p)
+		if err != nil {
+			fmt.Println("[skip] Path " + absPath + " doesn't exist.")
+			continue
+		}
+		result = append(result, absPath)
 	}
 	return result, nil
 }

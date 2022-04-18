@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"github.com/TARI0510/gosca/pkg/config"
 	"github.com/TARI0510/gosca/pkg/output"
+	"github.com/TARI0510/gosca/pkg/util/file"
 	"github.com/TARI0510/gosca/pkg/util/utils"
+	"os"
 	"strconv"
 )
 
-func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMap, vulnDbMap map[string]config.VulnDb, packagePaths []string) {
+func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMap, vulnDbMap map[string]config.VulnDb, workDir string, excludeList []string) {
 	var vulIdList []string
 
 	for _, goDep := range goDepsList {
@@ -17,12 +19,22 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		}
 	}
 
-	projectImports := config.Imports{
-		PackagePaths:       packagePaths,
-		PackageLocationMap: make(map[string][]string),
-	}
 	if len(vulIdList) != 0 {
+		packagePaths, err := file.PackagePaths(workDir, file.ExcludedDirsRegExp(excludeList))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %s\n", err)
+		}
+
+		projectImports := config.Imports{
+			PackagePaths:       packagePaths,
+			PackageLocationMap: make(map[string][]string),
+		}
+
+		// Compatible running directory is not in Go project
+		cacheCwd, _ := os.Getwd()
+		_ = os.Chdir(workDir)
 		projectImports.GetImports()
+		_ = os.Chdir(cacheCwd)
 
 		// Check if the project imports any of the std libs vulnerable packages
 		for idx, vulId := range vulIdList {
@@ -47,6 +59,7 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		return
 	}
 
+	// Output result
 	output.PrintVuln(vulIdList, vulnDbMap)
 
 }
