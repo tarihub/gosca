@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -45,6 +46,10 @@ func (v *VulnDb) ParseVulnDbYaml(yamlPath string) error {
 	return nil
 }
 
+func (v *VulnDb) String() string {
+	return fmt.Sprintf("%s %s %s %s %s %s %s %s", v.Module, v.Package, v.AdditionalPackages, v.Versions, v.Description, v.Published, v.Cves, v.Symbols)
+}
+
 func (vm VulnDbMap) ReadVulnDbYaml(yamlPaths []string) VulDbIdxMap {
 	var vulDbIdxMap VulDbIdxMap = make(VulDbIdxMap)
 
@@ -52,7 +57,7 @@ func (vm VulnDbMap) ReadVulnDbYaml(yamlPaths []string) VulDbIdxMap {
 		vuln := VulnDb{}
 		err := vuln.ParseVulnDbYaml(yamlPath)
 		if err != nil {
-			fmt.Println("[skip] Error while parse " + yamlPath + ": " + err.Error())
+			fmt.Fprintf(os.Stderr, "[skip] Error while parse "+yamlPath+": "+err.Error()+"\n")
 			continue
 		}
 		id := strings.TrimRight(strings.TrimRight(filepath.Base(yamlPath), ".yaml"), ".yml")

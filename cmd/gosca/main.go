@@ -12,16 +12,39 @@ import (
 	"strings"
 )
 
+type arrayFlags []string
+
+func (a *arrayFlags) String() string {
+	return strings.Join(*a, " ")
+}
+
+func (a *arrayFlags) Set(value string) error {
+	*a = append(*a, value)
+	return nil
+}
+
 var (
-	workDir   string
-	vulnDbDir string
-	version   bool
+	workDir     string
+	vulnDbDir   string
+	version     bool
+	excludeDirs arrayFlags
 )
 
 func init() {
 	flag.StringVar(&workDir, "work-dir", "", "home directory which contains the go.mod(sum) file")
 	flag.StringVar(&vulnDbDir, "vulndb-dir", "vulndb", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
+	// TODO Add include and exclude vulndb-dir flag
 	flag.BoolVar(&version, "v", false, "show gosca version")
+	flag.Var(&excludeDirs, "exclude-dir", "Exclude folder from go std libs scan (can be specified multiple times)")
+	err := flag.Set("exclude-dir", "vendor")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "\nError: failed to exclude the %q directory from scan", "vendor")
+	}
+	err = flag.Set("exclude-dir", ".git")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "\nError: failed to exclude the %q directory from scan", ".git")
+	}
+
 	flag.Parse()
 
 	if version {
@@ -31,13 +54,6 @@ func init() {
 }
 
 func main() {
-	var baseDir string
-	cwd, _ := os.Getwd()
-
-	if !strings.HasPrefix(workDir, "/") {
-		workDir = path.Join(cwd, workDir)
-	}
-
 	goModPath := path.Join(workDir, "go.mod")
 	goSumPath := path.Join(workDir, "go.sum")
 
@@ -47,10 +63,6 @@ func main() {
 	if goSumErr != nil && goModErr != nil {
 		fmt.Println(goModPath + " and " + goSumPath + " not found")
 		os.Exit(1)
-	}
-
-	if !strings.HasPrefix(vulnDbDir, "/") {
-		vulnDbDir = path.Join(baseDir, vulnDbDir)
 	}
 
 	yamlPaths, err := file.ListSuffixFiles(vulnDbDir, []string{".yaml", ".yml"})
@@ -71,14 +83,14 @@ func main() {
 	if goModErr == nil {
 		e1 = parser.ParseGoModOrSum(&goDepsList, goModPath, `(\S*)\s+(v[\d\w\-+.]*)[\s\n]`)
 		if e1 != nil {
-			fmt.Println("[skip] " + goModPath + ", " + e1.Error())
+			fmt.Fprintf(os.Stderr, "[skip] "+goModPath+", "+e1.Error()+"\n")
 		}
 	}
 
 	if goModErr == nil {
 		e2 = parser.ParseGoModOrSum(&goDepsList, goSumPath, `(\S*)\s+(v[\d\w\-+.]*)/go.mod[\s\n]`)
 		if e2 != nil {
-			fmt.Println("[skip] " + goSumPath + ", " + e2.Error())
+			fmt.Fprintf(os.Stderr, "[skip] "+goSumPath+", "+e2.Error()+"\n")
 		}
 	}
 
@@ -86,5 +98,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	checker.CheckGoModule(goDepsList, vulDbIdxMap, vulnDbMap)
+	packagePaths, err := file.PackagePaths(workDir, file.ExcludedDirsRegExp(excludeDirs))
+	if err != nil {
+		return
+	}
+
+	checker.CheckGoModule(goDepsList, vulDbIdxMap, vulnDbMap, packagePaths)
 }
