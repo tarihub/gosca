@@ -3,7 +3,6 @@ package file
 import (
 	"errors"
 	"fmt"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -14,21 +13,15 @@ import (
 func ListSuffixFiles(dirPath string, suffixes []string) ([]string, error) {
 	var files []string
 
-	err := filepath.Walk(dirPath, func(path string, info fs.FileInfo, err error) error {
-		if info.IsDir() {
-			return nil
+	for _, suffix := range suffixes {
+		globs, err := filepath.Glob(filepath.Join(dirPath, suffix))
+		if err != nil {
+			return nil, err
 		}
+		files = append(files, globs...)
+	}
 
-		for _, suffix := range suffixes {
-			if filepath.Ext(path) == suffix {
-				files = append(files, path)
-			}
-		}
-
-		return nil
-	})
-
-	return files, err
+	return files, nil
 }
 
 // PackagePaths returns a slice with all packages path at given root directory

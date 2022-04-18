@@ -65,9 +65,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	yamlPaths, err := file.ListSuffixFiles(vulnDbDir, []string{".yaml", ".yml"})
+	yamlPaths, err := file.ListSuffixFiles(vulnDbDir, []string{"*.yaml", "*.yml"})
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintf(os.Stderr, err.Error())
+		os.Exit(1)
+	}
+	if len(yamlPaths) == 0 {
+		fmt.Fprintf(os.Stderr, "No vulnerability rule load from %q dir", vulnDbDir)
 		os.Exit(1)
 	}
 
