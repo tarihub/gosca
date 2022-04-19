@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -30,32 +29,16 @@ type link struct {
 
 type VulnDbMap map[string]VulnDb
 
-// ParseVulnDbYaml parses a YAML file from yamlPath with config.VulnDb
-func (v *VulnDb) ParseVulnDbYaml(yamlPath string) error {
-	var yamlContent []byte
-
-	yamlContent, err := ioutil.ReadFile(yamlPath)
-	if err != nil {
-		return err
-	}
-	err = yaml.Unmarshal(yamlContent, v)
-	if err != nil {
-		//fmt.Println(yamlPath)
-		return err
-	}
-	return nil
-}
-
 func (v *VulnDb) String() string {
 	return fmt.Sprintf("%s %s %s %s %s %s %s %s", v.Module, v.Package, v.AdditionalPackages, v.Versions, v.Description, v.Published, v.Cves, v.Symbols)
 }
 
-func (vm VulnDbMap) ReadVulnDbYaml(yamlPaths []string) VulDbIdxMap {
+func (vm VulnDbMap) ReadVulnDbYaml(vulnDBs map[string]string) VulDbIdxMap {
 	var vulDbIdxMap VulDbIdxMap = make(VulDbIdxMap)
 
-	for _, yamlPath := range yamlPaths {
+	for yamlPath, yamlContent := range vulnDBs {
 		vuln := VulnDb{}
-		err := vuln.ParseVulnDbYaml(yamlPath)
+		err := yaml.Unmarshal([]byte(yamlContent), &vuln)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "[skip] Error while parse "+yamlPath+": "+err.Error()+"\n")
 			continue

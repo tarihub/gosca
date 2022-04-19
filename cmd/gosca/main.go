@@ -1,9 +1,10 @@
 package main
 
 import (
-	_ "archive/zip"
+	_ "embed"
 	"flag"
 	"fmt"
+	"github.com/TARI0510/gosca/assets"
 	"github.com/TARI0510/gosca/pkg/checker"
 	"github.com/TARI0510/gosca/pkg/config"
 	"github.com/TARI0510/gosca/pkg/parser"
@@ -33,7 +34,7 @@ var (
 
 func init() {
 	flag.StringVar(&workDir, "work-dir", ".", "home directory which contains the go.mod(sum) file")
-	flag.StringVar(&vulnDbDir, "vulndb-dir", "vulndb", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
+	flag.StringVar(&vulnDbDir, "vulndb-dir", "", "vulndb path, yaml from https://github.com/golang/vulndb/tree/master/reports")
 	// TODO Add include and exclude vulndb-dir flag
 	flag.BoolVar(&version, "v", false, "show gosca version")
 	flag.Var(&excludeDirs, "exclude-dir", "Exclude folder from go std libs scan (can be specified multiple times)")
@@ -66,19 +67,26 @@ func main() {
 		os.Exit(1)
 	}
 
-	yamlPaths, err := file.ListSuffixFiles(vulnDbDir, []string{"*.yaml", "*.yml"})
-	if err != nil {
-		fmt.Fprintf(os.Stderr, err.Error())
-		os.Exit(1)
+	var vulnDBs map[string]string
+	var err = error(nil)
+	if vulnDbDir == "" {
+		vulnDBs = assets.VulnDBs
+	} else {
+		vulnDBs, err = file.ReadSuffixFiles(vulnDbDir, []string{"*.yaml", "*.yml"})
+		if err != nil {
+			fmt.Fprintf(os.Stderr, err.Error())
+			os.Exit(1)
+		}
 	}
-	if len(yamlPaths) == 0 {
+
+	if len(vulnDBs) == 0 {
 		fmt.Fprintf(os.Stderr, "No vulnerability rule load from %q directory\n", vulnDbDir)
 		os.Exit(1)
 	}
 
 	// Read and parse all vulndb yaml files
 	vulnDbMap := make(config.VulnDbMap)
-	vulDbIdxMap := vulnDbMap.ReadVulnDbYaml(yamlPaths)
+	vulDbIdxMap := vulnDbMap.ReadVulnDbYaml(vulnDBs)
 
 	// Parse work_dir/go.mod and work_dir/sum.mod
 	goDepsList := make([]config.Dependence, 0)

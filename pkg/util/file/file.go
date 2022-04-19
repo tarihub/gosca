@@ -3,15 +3,17 @@ package file
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 )
 
-// ListSuffixFiles list directory's files with specify suffix
-func ListSuffixFiles(dirPath string, suffixes []string) ([]string, error) {
+// ReadSuffixFiles Read directory's files with specify suffix
+func ReadSuffixFiles(dirPath string, suffixes []string) (map[string]string, error) {
 	var files []string
+	var vulnDBs = make(map[string]string)
 
 	for _, suffix := range suffixes {
 		globs, err := filepath.Glob(filepath.Join(dirPath, suffix))
@@ -21,14 +23,23 @@ func ListSuffixFiles(dirPath string, suffixes []string) ([]string, error) {
 		files = append(files, globs...)
 	}
 
-	return files, nil
+	for _, file := range files {
+		c, err := ioutil.ReadFile(file)
+		if err != nil {
+			return nil, err
+		}
+
+		vulnDBs[file] = string(c)
+	}
+
+	return vulnDBs, nil
 }
 
 // PackagePaths returns a slice with all packages path at given root directory
 func PackagePaths(root string, excludes []*regexp.Regexp) ([]string, error) {
 	paths := map[string]bool{}
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
-		// FIXME cannot identify soft link
+		// FIXME cannot identify soft link directory
 		if filepath.Ext(path) == ".go" {
 			path = filepath.Dir(path)
 			if isExcluded(filepath.ToSlash(path), excludes) {
