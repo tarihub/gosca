@@ -2,7 +2,7 @@
 
 GoSCA scans a Go project for vulnerable dependencies.
 
-Usage
+### Usage
 ```bash
 ./gosca --work-dir /path/to/workdir
 ```
@@ -13,6 +13,21 @@ Running
 
 ![run.png](doc/run.png)
 
-## References
+### Download
+Select your platform for download
+
+https://github.com/TARI0510/gosca/releases
+
+### Build
+```bash
+go build -o gosca cmd/gosca/main.go
+```
+
+or for cross platform builds
+```bash
+sh package.sh
+```
+
+### References
 1. https://github.com/securego/gosec
 2. https://github.com/fatedier/frp
