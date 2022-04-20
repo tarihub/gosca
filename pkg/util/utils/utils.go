@@ -43,10 +43,20 @@ func CompareVersion(version1, version2 string) int {
 }
 
 // RemoveElemDisorder remove element from slice disorderly.
-func RemoveElemDisorder(s []string, i int) []string {
-	if i == len(s) {
-		return s[:len(s)-1]
+//func RemoveElemDisorder(s []string, i int) []string {
+//	if i == len(s) {
+//		return s[:len(s)-1]
+//	}
+//	s[i] = s[len(s)-1]
+//	return s[:len(s)-1]
+//}
+
+//RemoveElem remove element from slice.
+func RemoveElem(s []string, e string) []string {
+	for i, v := range s {
+		if v == e {
+			return append(s[:i], s[i+1:]...)
+		}
 	}
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
+	return s
 }

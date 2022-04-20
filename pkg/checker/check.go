@@ -37,11 +37,11 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		_ = os.Chdir(cacheCwd)
 
 		// Check if the project imports any of the std libs vulnerable packages
-		for idx, vulId := range vulIdList {
+		for _, vulId := range vulIdList {
 			if _, ok := vulnDbMap[vulId]; ok {
 				if vulnDbMap[vulId].Module == "std" {
 					if _, ok := projectImports.PackageLocationMap[vulnDbMap[vulId].Package]; !ok {
-						vulIdList = utils.RemoveElemDisorder(vulIdList, idx)
+						vulIdList = utils.RemoveElem(vulIdList, vulId)
 					}
 				}
 			}
