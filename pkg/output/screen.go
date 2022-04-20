@@ -6,18 +6,18 @@ import (
 	"strings"
 )
 
-func PrintVuln(vulIdList []string, vulnDbMap map[string]config.VulnDb) {
+func PrintVuln(vulIdList []string, vulnDbMap map[string]config.VulnDb, stdPkgLocationMap map[string][]string) {
 	for _, vulId := range vulIdList {
 		if _, ok := vulnDbMap[vulId]; ok {
 			fmt.Println("\t" + strings.Repeat("=", 80))
 			fmt.Printf("\t%s", vulId)
 			var vul = []config.VulnDb{vulnDbMap[vulId]}
-			printAddition(vul, "\t", 80)
+			printAddition(vul, stdPkgLocationMap, "\t", 80)
 		}
 	}
 }
 
-func printAddition(additionalPacks []config.VulnDb, tab string, splitDashNum int) {
+func printAddition(additionalPacks []config.VulnDb, stdPkgLocationMap map[string][]string, tab string, splitDashNum int) {
 	for _, vul := range additionalPacks {
 		dash := strings.Repeat("-", splitDashNum)
 		fmt.Println("\n" + tab + dash)
@@ -29,9 +29,15 @@ func printAddition(additionalPacks []config.VulnDb, tab string, splitDashNum int
 			fmt.Printf("%s[Package] \n%s%s\n\n", tab, tab, vul.Package)
 		}
 
+		if vul.Module == "std" {
+			if _, ok := stdPkgLocationMap[vul.Package]; ok {
+				fmt.Printf("%s[Location] \n%s%s\n\n", tab, tab, stdPkgLocationMap[vul.Package])
+			}
+		}
+
 		if len(vul.AdditionalPackages) > 0 {
 			fmt.Printf("%s[Additional Packages] \n", tab)
-			printAddition(vul.AdditionalPackages, tab+"\t", 20)
+			printAddition(vul.AdditionalPackages, stdPkgLocationMap, tab+"\t", 20)
 		}
 
 		var versionsList []string

@@ -19,16 +19,16 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		}
 	}
 
+	projectImports := config.Imports{}
+
 	if len(vulIdList) != 0 {
 		packagePaths, err := file.PackagePaths(workDir, file.ExcludedDirsRegExp(excludeList))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %s\n", err)
 		}
 
-		projectImports := config.Imports{
-			PackagePaths:       packagePaths,
-			PackageLocationMap: make(map[string][]string),
-		}
+		projectImports.PackagePaths = packagePaths
+		projectImports.PackageLocationMap = make(map[string][]string)
 
 		// Compatible running directory is not in Go project
 		cacheCwd, _ := os.Getwd()
@@ -60,6 +60,6 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 	}
 
 	// Output result
-	output.PrintVuln(vulIdList, vulnDbMap)
+	output.PrintVuln(vulIdList, vulnDbMap, projectImports.PackageLocationMap)
 
 }

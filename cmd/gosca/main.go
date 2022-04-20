@@ -111,5 +111,6 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println("[*] Working on " + workDir)
 	checker.CheckGoModule(goDepsList, vulDbIdxMap, vulnDbMap, workDir, excludeDirs)
 }
