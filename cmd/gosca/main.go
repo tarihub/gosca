@@ -42,7 +42,7 @@ func init() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "\nError: failed to exclude the %q directory from scan", "vendor")
 	}
-	err = flag.Set("exclude-dir", ".git")
+	err = flag.Set("exclude-dir", "\\.git")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "\nError: failed to exclude the %q directory from scan", ".git")
 	}

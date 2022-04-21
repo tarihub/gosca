@@ -5,7 +5,6 @@ import (
 	"github.com/TARI0510/gosca/pkg/config"
 	"github.com/TARI0510/gosca/pkg/output"
 	"github.com/TARI0510/gosca/pkg/util/file"
-	"github.com/TARI0510/gosca/pkg/util/utils"
 	"os"
 	"strconv"
 )
@@ -29,20 +28,16 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 
 		projectImports.PackagePaths = packagePaths
 		projectImports.PackageLocationMap = make(map[string][]string)
-
-		// Compatible running directory is not in Go project
-		cacheCwd, _ := os.Getwd()
-		_ = os.Chdir(workDir)
 		projectImports.GetImports()
-		_ = os.Chdir(cacheCwd)
 
 		// Check if the project imports any of the std libs vulnerable packages
-		for _, vulId := range vulIdList {
-			if _, ok := vulnDbMap[vulId]; ok {
-				if vulnDbMap[vulId].Module == "std" {
-					if _, ok := projectImports.PackageLocationMap[vulnDbMap[vulId].Package]; !ok {
-						vulIdList = utils.RemoveElem(vulIdList, vulId)
-					}
+		// NOTICE: We cannot use `for _, vulId := range vulIdList` here
+		// because remove element from slice while iterating will skip the removed element location
+		for i := 0; i < len(vulIdList); i++ {
+			if _, ok := vulnDbMap[vulIdList[i]]; ok && vulnDbMap[vulIdList[i]].Module == "std" {
+				if _, ok := projectImports.PackageLocationMap[vulnDbMap[vulIdList[i]].Package]; !ok {
+					vulIdList = append(vulIdList[:i], vulIdList[i+1:]...)
+					i--
 				}
 			}
 		}

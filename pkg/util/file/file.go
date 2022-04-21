@@ -39,12 +39,12 @@ func ReadSuffixFiles(dirPath string, suffixes []string) (map[string]string, erro
 func PackagePaths(root string, excludes []*regexp.Regexp) ([]string, error) {
 	paths := map[string]bool{}
 	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
+		if isExcluded(filepath.ToSlash(path), excludes) {
+			return nil
+		}
 		// FIXME cannot identify soft link directory
 		if filepath.Ext(path) == ".go" {
-			path = filepath.Dir(path)
-			if isExcluded(filepath.ToSlash(path), excludes) {
-				return nil
-			}
+			//path = filepath.Dir(path)
 			paths[path] = true
 		}
 		return nil
