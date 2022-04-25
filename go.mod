@@ -3,14 +3,15 @@ module github.com/TARI0510/gosca
 go 1.17
 
 require (
-	golang.org/x/tools v0.1.10
+	github.com/antchfx/htmlquery v1.2.4
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (
-	golang.org/x/mod v0.6.0-dev.0.20220106191415-9b9b3d81d5e3 // indirect
-	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	github.com/antchfx/xpath v1.2.0 // indirect
+	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	golang.org/x/net v0.0.0-20200421231249-e086a090c8fd // indirect
+	golang.org/x/text v0.3.0 // indirect
 )
 
 replace github.com/TARI0510/gosca => ./pkg

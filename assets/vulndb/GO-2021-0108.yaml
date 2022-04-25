@@ -1,20 +1,23 @@
 module: github.com/gofiber/fiber
+package: ""
+additional_packages: []
 versions:
-  - fixed: v1.12.6
+    - fixed: v1.12.6
 description: |
     Due to improper input sanitization, a maliciously constructed filename could cause a file
     download to use an attacker controlled filename, as well as injecting additional headers
     into an HTTP response.
-published: 2021-07-28T18:08:05Z
 cves:
-  - CVE-2020-15111
-ghsas:
-  - GHSA-9cx9-x2gp-9qvh
-credit: Hasibul Hasan and Abdullah Shaleh
+    - CVE-2020-15111
+cvss3:
+    - "5.4"
+severities:
+    - MEDIUM
 symbols:
-  - Ctx.Attachment
+    - Ctx.Attachment
+derived_symbols: []
 links:
     pr: https://github.com/gofiber/fiber/pull/579
     commit: https://github.com/gofiber/fiber/commit/f698b5d5066cfe594102ae252cd58a1fe57cf56f
     context:
-      - https://github.com/advisories/GHSA-9cx9-x2gp-9qvh
+        - https://github.com/advisories/GHSA-9cx9-x2gp-9qvh

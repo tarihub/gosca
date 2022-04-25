@@ -14,11 +14,13 @@ type VulnDb struct {
 	AdditionalPackages []VulnDb            `yaml:"additional_packages"`
 	Versions           []map[string]string `yaml:"versions"`
 	Description        string              `yaml:"description"`
-	Published          string              `yaml:"published"`
-	Cves               []string            `yaml:"cves"`
-	Symbols            []string            `yaml:"symbols"`
-	DerivedSymbols     []string            `yaml:"derived_symbols"`
-	Links              link                `yaml:"links"`
+	//Published          string              `yaml:"published"`
+	Cves           []string `yaml:"cves"`
+	Cvss3          []string `yaml:"cvss3"`
+	Severities     []string `yaml:"severities"`
+	Symbols        []string `yaml:"symbols"`
+	DerivedSymbols []string `yaml:"derived_symbols"`
+	Links          link     `yaml:"links"`
 }
 
 type link struct {
@@ -30,7 +32,7 @@ type link struct {
 type VulnDbMap map[string]VulnDb
 
 func (v *VulnDb) String() string {
-	return fmt.Sprintf("%s %s %s %s %s %s %s %s", v.Module, v.Package, v.AdditionalPackages, v.Versions, v.Description, v.Published, v.Cves, v.Symbols)
+	return fmt.Sprintf("%s %s %s %s %s %s %s", v.Module, v.Package, v.AdditionalPackages, v.Versions, v.Description, v.Cves, v.Symbols)
 }
 
 func (vm VulnDbMap) ReadVulnDbYaml(vulnDBs map[string]string) VulDbIdxMap {

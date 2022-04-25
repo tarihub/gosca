@@ -1,16 +1,21 @@
 module: github.com/documize/community
 package: github.com/documize/community/domain/section/markdown
+additional_packages: []
 versions:
-  - fixed: v1.76.3-0.20191119114751-a4384210d4d0
+    - fixed: v1.76.3-0.20191119114751-a4384210d4d0
 description: |
     HTML content in markdown is not santized during rendering, possibly allowing
     XSS if used to render untrusted user input.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2019-19619
-ghsas:
-  - GHSA-wmwp-pggc-h4mj
+    - CVE-2019-19619
+cvss3:
+    - "6.1"
+severities:
+    - MEDIUM
 symbols:
-  - Provider.Render
+    - Provider.Render
+derived_symbols: []
 links:
+    pr: ""
     commit: https://github.com/documize/community/commit/a4384210d4d0d6b18e6fdb7e155de96d4a1cf9f3
+    context: []

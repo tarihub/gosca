@@ -1,26 +1,40 @@
 module: github.com/square/go-jose
 package: github.com/square/go-jose/cipher
 additional_packages:
-  - module: github.com/square/go-jose
-    symbols:
-      - JsonWebEncryption.Decrypt
+    - module: github.com/square/go-jose
+      package: ""
+      additional_packages: []
+      versions: []
+      description: ""
+      cves: []
+      cvss3: []
+      severities: []
+      symbols:
+        - JsonWebEncryption.Decrypt
+      derived_symbols: []
+      links:
+        pr: ""
+        commit: ""
+        context: []
 versions:
-  - fixed: v0.0.0-20160831185616-c7581939a365
+    - fixed: v0.0.0-20160831185616-c7581939a365
 description: |
     When using ECDH-ES an attacker can mount an invalid curve attack during
     decryption as the supplied public key is not checked to be on the same
     curve as the receivers private key.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2016-9121
-ghsas:
-  - GHSA-86r9-39j9-99wp
-credit: Quan Nguyen from Google's Information Security Engineering Team
+    - CVE-2016-9121
+cvss3:
+    - "9.1"
+severities:
+    - CRITICAL
 symbols:
-  - DeriveECDHES
-  - ecDecrypterSigner.decryptKey
-  - rawJsonWebKey.ecPublicKey
+    - DeriveECDHES
+    - ecDecrypterSigner.decryptKey
+    - rawJsonWebKey.ecPublicKey
+derived_symbols: []
 links:
+    pr: ""
     commit: https://github.com/square/go-jose/commit/c7581939a3656bb65e89d64da0a52364a33d2507
     context:
-      - https://www.openwall.com/lists/oss-security/2016/11/03/1
+        - https://www.openwall.com/lists/oss-security/2016/11/03/1

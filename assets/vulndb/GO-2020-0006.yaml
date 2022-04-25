@@ -1,24 +1,27 @@
 module: github.com/miekg/dns
+package: ""
+additional_packages: []
 versions:
-  - fixed: v1.0.4-0.20180125103619-43913f2f4fbd
+    - fixed: v1.0.4-0.20180125103619-43913f2f4fbd
 description: |
     An attacker may prevent TCP connections to a Server by opening
     a connection and leaving it idle, until the connection is closed by
     the server no other connections will be accepted.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2017-15133
-ghsas:
-  - GHSA-p55x-7x9v-q8m4
-credit: Pedro Sampaio
+    - CVE-2017-15133
+cvss3:
+    - "7.5"
+severities:
+    - HIGH
 symbols:
-  - Server.serveTCP
+    - Server.serveTCP
 derived_symbols:
-  - ActivateAndServe
-  - ListenAndServe
-  - ListenAndServeTLS
-  - Server.ActivateAndServe
-  - Server.ListenAndServe
+    - ActivateAndServe
+    - ListenAndServe
+    - ListenAndServeTLS
+    - Server.ActivateAndServe
+    - Server.ListenAndServe
 links:
     pr: https://github.com/miekg/dns/pull/631
     commit: https://github.com/miekg/dns/commit/43913f2f4fbd7dcff930b8a809e709591e4dd79e
+    context: []

@@ -1,20 +1,25 @@
 module: std
 package: syscall
+additional_packages: []
 versions:
-  - fixed: go1.5.4
-  - fixed: go1.6.1
+    - fixed: go1.5.4
+    - fixed: go1.6.1
 description: |
     Untrusted search path vulnerability on Windows related to LoadLibrary allows
     local users to gain privileges via a malicious DLL in the current working
     directory.
-published: 2022-01-05T22:41:50Z
 cves:
-  - CVE-2016-3958
+    - CVE-2016-3958
+cvss3:
+    - "7.8"
+severities:
+    - HIGH
 symbols:
-  - LoadLibrary
+    - LoadLibrary
+derived_symbols: []
 links:
     pr: https://go.dev/cl/21428
     commit: https://go.googlesource.com/go/+/6a0bb87bd0bf0fdf8ddbd35f77a75ebd412f61b0
     context:
-      - https://go.dev/issue/14959
-      - https://groups.google.com/g/golang-announce/c/9eqIHqaWvck
+        - https://go.dev/issue/14959
+        - https://groups.google.com/g/golang-announce/c/9eqIHqaWvck

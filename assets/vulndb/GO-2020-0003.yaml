@@ -1,20 +1,19 @@
 module: github.com/revel/revel
+package: ""
+additional_packages: []
 versions:
-  - fixed: v1.0.0
+    - fixed: v1.0.0
 description: |
     An attacker can cause an application that accepts slice parameters
     (https://revel.github.io/manual/parameters.html#slices) to allocate large
     amounts of memory and crash through manipulating the request query sent to the application.
-published: 2021-04-14T20:04:52Z
-credit: '@SYM01'
+cves: []
+cvss3: []
+severities: []
+symbols: []
+derived_symbols: []
 links:
     pr: https://github.com/revel/revel/pull/1427
     commit: https://github.com/revel/revel/commit/d160ecb72207824005b19778594cbdc272e8a605
     context:
-      - https://github.com/revel/revel/issues/1424
-cve_metadata:
-    id: CVE-9999-0002
-    cwe: 'CWE-400: Uncontrolled Resource Consumption'
-    description: |
-        Unsanitized input in the query parser in github.com/revel/revel before v1.0.0
-        allows remote attackers to cause resource exhaustion via memory allocation.
+        - https://github.com/revel/revel/issues/1424

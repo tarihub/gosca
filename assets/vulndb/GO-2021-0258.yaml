@@ -1,6 +1,8 @@
 module: github.com/pomerium/pomerium
+package: ""
+additional_packages: []
 versions:
-  - fixed: v0.15.6
+    - fixed: v0.15.6
 description: |
     Pomerium is an open source identity-aware access proxy. Changes to the OIDC
     claims of a user after initial login are not reflected in policy evaluation
@@ -10,15 +12,17 @@ description: |
 
     For users unable to upgrade clear data on databroker service by clearing
     redis or restarting the in-memory databroker to force claims to be updated.
-published: 2022-01-14T17:30:31Z
 cves:
-  - CVE-2021-41230
-ghsas:
-  - GHSA-j6wp-3859-vxfg
+    - CVE-2021-41230
+cvss3:
+    - "8.8"
+severities:
+    - HIGH
 symbols:
-  - Manager.onUpdateRecords
+    - Manager.onUpdateRecords
+derived_symbols: []
 links:
     pr: https://github.com/pomerium/pomerium/pull/2724
     commit: https://github.com/pomerium/pomerium/commit/f20542c4bf2cc691e4c324f7ec79e02e46d95511
     context:
-      - https://github.com/pomerium/pomerium/security/advisories/GHSA-j6wp-3859-vxfg
+        - https://github.com/pomerium/pomerium/security/advisories/GHSA-j6wp-3859-vxfg

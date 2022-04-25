@@ -1,24 +1,27 @@
 module: github.com/russellhaering/gosaml2
+package: ""
+additional_packages: []
 versions:
-  - fixed: v0.6.0
+    - fixed: v0.6.0
 description: |
     Due to the behavior of encoding/xml, a crafted XML document may cause
     XML Digital Signature validation to be entirely bypassed, causing an
     unsigned document to appear signed.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2020-29509
-ghsas:
-  - GHSA-xhqq-x44f-9fgg
-credit: Juho Nurminen
+    - CVE-2020-29509
+cvss3:
+    - "5.6"
+severities:
+    - MEDIUM
 symbols:
-  - parseResponse
+    - parseResponse
 derived_symbols:
-  - SAMLServiceProvider.RetrieveAssertionInfo
-  - SAMLServiceProvider.ValidateEncodedLogoutRequestPOST
-  - SAMLServiceProvider.ValidateEncodedLogoutResponsePOST
-  - SAMLServiceProvider.ValidateEncodedResponse
+    - SAMLServiceProvider.RetrieveAssertionInfo
+    - SAMLServiceProvider.ValidateEncodedLogoutRequestPOST
+    - SAMLServiceProvider.ValidateEncodedLogoutResponsePOST
+    - SAMLServiceProvider.ValidateEncodedResponse
 links:
+    pr: ""
     commit: https://github.com/russellhaering/gosaml2/commit/42606dafba60c58c458f14f75c4c230459672ab9
     context:
-      - https://github.com/russellhaering/gosaml2/security/advisories/GHSA-xhqq-x44f-9fgg
+        - https://github.com/russellhaering/gosaml2/security/advisories/GHSA-xhqq-x44f-9fgg

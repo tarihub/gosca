@@ -59,13 +59,13 @@ func printAddition(additionalPacks []config.VulnDb, stdPkgLocationMap map[string
 			fmt.Printf("%s[Description] \n%s%s\n\n", tab, tab, strings.Replace(vul.Description, "\n", "\n"+tab, -1))
 		}
 
-		if vul.Published != "" {
-			fmt.Printf("%s[Published] \n%s%s\n\n", tab, tab, vul.Published)
-		}
-
 		if len(vul.Cves) > 0 {
 			cves := strings.Join(vul.Cves, "\n"+tab)
 			fmt.Printf("%s[CVE] \n%s%s\n\n", tab, tab, cves)
+
+			if vul.Severities != nil {
+				fmt.Printf("%s[Severity] \n%s%s\n\n", tab, tab, strings.Join(vul.Severities, "\n"+tab))
+			}
 		}
 
 		if len(vul.Symbols) > 0 {

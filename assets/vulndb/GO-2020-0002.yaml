@@ -1,16 +1,21 @@
 module: github.com/proglottis/gpgme
+package: ""
+additional_packages: []
 versions:
-  - fixed: v0.1.1
+    - fixed: v0.1.1
 description: |
     The Data, Context, or Key finalizers might run during or before GPGME
     operations. This will release the C structures that are still in use, leading
     to crashes and potentially code execution through a use-after-free.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2020-8945
-ghsas:
-  - GHSA-m6wg-2mwg-4rfq
-credit: Ulrich Obergfell <uobergfe@redhat.com>
+    - CVE-2020-8945
+cvss3:
+    - "7.5"
+severities:
+    - HIGH
+symbols: []
+derived_symbols: []
 links:
     pr: https://github.com/proglottis/gpgme/pull/23
     commit: https://github.com/proglottis/gpgme/commit/92153bcb59bd2f511e502262c46c7bd660e21733
+    context: []

@@ -1,20 +1,24 @@
 module: github.com/ory/fosite
+package: ""
+additional_packages: []
 versions:
-  - fixed: v0.31.0
+    - fixed: v0.31.0
 description: |
     Uniqueness of JWT IDs (jti) are not checked, allowing the JWT to be
     replayed.
-published: 2021-07-28T18:08:05Z
 cves:
-  - CVE-2020-15222
-ghsas:
-  - GHSA-v3q9-2p3m-7g43
+    - CVE-2020-15222
+cvss3:
+    - "8.1"
+severities:
+    - HIGH
 symbols:
-  - Fosite.AuthenticateClient
+    - Fosite.AuthenticateClient
 derived_symbols:
-  - Fosite.NewAccessRequest
-  - Fosite.NewRevocationRequest
+    - Fosite.NewAccessRequest
+    - Fosite.NewRevocationRequest
 links:
+    pr: ""
     commit: https://github.com/ory/fosite/commit/0c9e0f6d654913ad57c507dd9a36631e1858a3e9
     context:
-      - https://github.com/ory/fosite/security/advisories/GHSA-v3q9-2p3m-7g43
+        - https://github.com/ory/fosite/security/advisories/GHSA-v3q9-2p3m-7g43

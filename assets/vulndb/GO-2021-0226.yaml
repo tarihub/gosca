@@ -1,18 +1,28 @@
 module: std
 package: net/http/cgi
 additional_packages:
-  - module: std
-    package: net/http/fcgi
-    symbols:
-      - response.Write
-      - response.WriteHeader
-      - response.writeCGIHeader
-    versions:
-      - fixed: go1.14.8
-      - fixed: go1.15.1
+    - module: std
+      package: net/http/fcgi
+      additional_packages: []
+      versions:
+        - fixed: go1.14.8
+        - fixed: go1.15.1
+      description: ""
+      cves: []
+      cvss3: []
+      severities: []
+      symbols:
+        - response.Write
+        - response.WriteHeader
+        - response.writeCGIHeader
+      derived_symbols: []
+      links:
+        pr: ""
+        commit: ""
+        context: []
 versions:
-  - fixed: go1.14.8
-  - fixed: go1.15.1
+    - fixed: go1.14.8
+    - fixed: go1.15.1
 description: |
     When a Handler does not explicitly set the Content-Type header, the the
     package would default to “text/html”, which could cause a Cross-Site Scripting
@@ -26,17 +36,20 @@ description: |
     Although this protects some applications that validate the contents of
     uploaded files, not setting the Content-Type header explicitly on any
     attacker-controlled file is unsafe and should be avoided.
-published: 2022-01-13T03:44:58Z
 cves:
-  - CVE-2020-24553
-credit: RedTeam Pentesting GmbH
+    - CVE-2020-24553
+cvss3:
+    - "6.1"
+severities:
+    - MEDIUM
 symbols:
-  - response.Write
-  - response.WriteHeader
-  - response.writeCGIHeader
+    - response.Write
+    - response.WriteHeader
+    - response.writeCGIHeader
+derived_symbols: []
 links:
     pr: https://go.dev/cl/252179
     commit: https://go.googlesource.com/go/+/4f5cd0c0331943c7ec72df3b827d972584f77833
     context:
-      - https://groups.google.com/g/golang-announce/c/8wqlSbkLdPs
-      - https://go.dev/issue/40928
+        - https://groups.google.com/g/golang-announce/c/8wqlSbkLdPs
+        - https://go.dev/issue/40928

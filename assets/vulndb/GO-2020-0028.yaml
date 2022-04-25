@@ -1,22 +1,25 @@
 module: github.com/miekg/dns
+package: ""
+additional_packages: []
 versions:
-  - fixed: v1.0.10
+    - fixed: v1.0.10
 description: |
     Due to a nil pointer dereference, parsing a malformed zone file
     containing TA records may cause a panic. If parsing user supplied
     input, this may be used as a denial of service vector.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2018-17419
-ghsas:
-  - GHSA-9jcx-pr2f-qvq5
-credit: '@tr3ee'
+    - CVE-2018-17419
+cvss3:
+    - "7.5"
+severities:
+    - HIGH
 symbols:
-  - setTA
+    - setTA
 derived_symbols:
-  - ParseZone
-  - ReadRR
+    - ParseZone
+    - ReadRR
 links:
+    pr: ""
     commit: https://github.com/miekg/dns/commit/501e858f679edecd4a38a86317ce50271014a80d
     context:
-      - https://github.com/miekg/dns/issues/742
+        - https://github.com/miekg/dns/issues/742

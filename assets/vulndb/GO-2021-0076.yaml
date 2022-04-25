@@ -1,15 +1,22 @@
 module: github.com/evanphx/json-patch
+package: ""
+additional_packages: []
 versions:
-  - fixed: v0.5.2
+    - fixed: v0.5.2
 description: |
     A malicious JSON patch can cause a panic due to an out-of-bounds
     write attempt. This can be used as a denial of service vector if
     exposed to arbitrary user input.
-published: 2021-04-14T20:04:52Z
 cves:
-  - CVE-2018-14632
+    - CVE-2018-14632
+cvss3:
+    - "7.7"
+severities:
+    - HIGH
 symbols:
-  - partialArray.add
+    - partialArray.add
+derived_symbols: []
 links:
     pr: https://github.com/evanphx/json-patch/pull/57
     commit: https://github.com/evanphx/json-patch/commit/4c9aadca8f89e349c999f04e28199e96e81aba03
+    context: []

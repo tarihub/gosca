@@ -1,22 +1,37 @@
 module: github.com/btcsuite/go-socks
 package: github.com/btcsuite/go-socks/socks
 additional_packages:
-  - module: github.com/btcsuitereleases/go-socks
-    package: github.com/btcsuitereleases/go-socks/socks
-    symbols:
-      - proxiedConn.LocalAddr
-      - proxiedConn.RemoteAddr
-    versions:
-      - fixed: v0.0.0-20130808000456-233bccbb1abe
+    - module: github.com/btcsuitereleases/go-socks
+      package: github.com/btcsuitereleases/go-socks/socks
+      additional_packages: []
+      versions:
+        - fixed: v0.0.0-20130808000456-233bccbb1abe
+      description: ""
+      cves: []
+      cvss3: []
+      severities: []
+      symbols:
+        - proxiedConn.LocalAddr
+        - proxiedConn.RemoteAddr
+      derived_symbols: []
+      links:
+        pr: ""
+        commit: ""
+        context: []
 versions:
-  - fixed: v0.0.0-20130808000456-233bccbb1abe
+    - fixed: v0.0.0-20130808000456-233bccbb1abe
 description: |
     The RemoteAddr and LocalAddr methods on the returned net.Conn may
     call themselves, leading to an infinite loop which will crash the
     program due to a stack overflow.
-published: 2021-04-14T20:04:52Z
+cves: []
+cvss3: []
+severities: []
 symbols:
-  - proxiedConn.LocalAddr
-  - proxiedConn.RemoteAddr
+    - proxiedConn.LocalAddr
+    - proxiedConn.RemoteAddr
+derived_symbols: []
 links:
+    pr: ""
     commit: https://github.com/btcsuite/go-socks/commit/233bccbb1abe02f05750f7ace66f5bffdb13defc
+    context: []

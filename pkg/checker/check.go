@@ -35,10 +35,23 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		// because remove element from slice while iterating will skip the removed element location
 		for i := 0; i < len(vulIdList); i++ {
 			if _, ok := vulnDbMap[vulIdList[i]]; ok && vulnDbMap[vulIdList[i]].Module == "std" {
-				if _, ok := projectImports.PackageLocationMap[vulnDbMap[vulIdList[i]].Package]; !ok {
+				pkg := vulnDbMap[vulIdList[i]].Package
+				if _, ok := projectImports.PackageLocationMap[pkg]; !ok {
 					vulIdList = append(vulIdList[:i], vulIdList[i+1:]...)
 					i--
 				}
+
+				// Add function location map, but it's complex to get it...
+				//existSymbol := false
+				//for _, symbol := range vulnDbMap[vulIdList[i]].Symbols {
+				//	if _, ok := projectImports.FuncLocationMap[pkg+"."+symbol]; ok {
+				//		existSymbol = true
+				//	}
+				//}
+				//if !existSymbol {
+				//	vulIdList = append(vulIdList[:i], vulIdList[i+1:]...)
+				//	i--
+				//}
 			}
 		}
 	}
