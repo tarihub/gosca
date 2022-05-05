@@ -3,13 +3,15 @@ package checker
 import (
 	"fmt"
 	"github.com/TARI0510/gosca/pkg/config"
-	"github.com/TARI0510/gosca/pkg/output"
 	"github.com/TARI0510/gosca/pkg/util/file"
 	"os"
 	"strconv"
 )
 
-func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMap, vulnDbMap map[string]config.VulnDb, workDir string, excludeList []string) {
+func CheckGoModule(
+	goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMap, vulnDbMap map[string]config.VulnDb,
+	workDir string, excludeList []string, outFormat string) ([]string, config.Imports,
+) {
 	var vulIdList []string
 
 	for _, goDep := range goDepsList {
@@ -64,10 +66,8 @@ func CheckGoModule(goDepsList []config.Dependence, vulDbIdxMap config.VulDbIdxMa
 		fmt.Println("[!] " + strconv.Itoa(vulNum) + " Vulnerability Found")
 	} else {
 		fmt.Println("[+] No Vulnerability Found")
-		return
+		os.Exit(0)
 	}
 
-	// Output result
-	output.PrintVuln(vulIdList, vulnDbMap, projectImports.PackageLocationMap)
-
+	return vulIdList, projectImports
 }

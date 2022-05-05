@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func PrintVuln(vulIdList []string, vulnDbMap map[string]config.VulnDb, stdPkgLocationMap map[string][]string) {
+func PrintVuln(vulIdList []string, vulnDbMap map[string]config.VulnDb, stdPkgLocationMap map[string][]string, f F) {
 	for _, vulId := range vulIdList {
 		if _, ok := vulnDbMap[vulId]; ok {
 			fmt.Println("\t" + strings.Repeat("=", 80))
